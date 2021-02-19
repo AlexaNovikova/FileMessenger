@@ -33,8 +33,9 @@ public class CloudController implements Initializable {
                     Platform.runLater(()->output.appendText(message));
                     if (message.startsWith("get ")){
                        String fileName = message.split(" ", 4)[1];
-                       int fileSize = Integer.parseInt(message.split(" ", 4)[2]);
-                        network.getFile(fileName, fileSize, this);
+                       long fileSize = Long.valueOf(message.split(" ", 4)[2]);
+                           network.getFile(fileName, fileSize, this);
+
                     }
                     if (message.equals("/quit")){
                         network.close();

@@ -2,12 +2,13 @@ import java.io.*;
 import java.net.Socket;
 
 public class Handler implements Runnable{
-
+    private static final int BUFFER_SIZE=8192;
     private String serverDir = "Server/src/ServerFiles";
     private String username;
 
     private final IoFileCommandServer server;
     private final Socket socket;
+    private static byte[] buffer;
 
     public Handler(IoFileCommandServer server, Socket socket) {
         this.server = server;
@@ -61,23 +62,23 @@ public class Handler implements Runnable{
         }
         else if (message.startsWith("get ")){
             String fileName = message.split(" ", 2)[1];
-            File fileFromServer= new File("Server/src/ServerFiles/"+fileName);
+            File fileFromServer= new File(serverDir+"/"+fileName);
             //File fileToClient = new File("data/2.png");
 //            System.out.println(f1.exists());
 //            System.out.println(copy.exists());
             if(fileFromServer.exists()){
                 os.writeUTF("get "+fileName+ " "+ fileFromServer.length()+ " \n");
-                InputStream fis = new FileInputStream(fileFromServer);
+              try(  InputStream fis = new FileInputStream(fileFromServer)){
                 int ptr=0;
-                byte[] buffer = new byte[8192];
+                buffer = new byte[BUFFER_SIZE];
                 while ((ptr=fis.read(buffer))!=-1){
                     os.write(buffer,0,ptr);
                     os.flush();
-                }
-              fis.close();
+                }}
             }
             else {
                 os.writeUTF("File doesn't exit.\n");
+                os.flush();
             }
 
         }

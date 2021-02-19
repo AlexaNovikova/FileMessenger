@@ -3,7 +3,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class IoFileCommandServer {
-    private String serverDir = "Server/src/ServerFiles";
+    private final String serverDir = "Server/src/ServerFiles";
 
     public IoFileCommandServer(){
         try (ServerSocket serverSocket = new ServerSocket(8189)){

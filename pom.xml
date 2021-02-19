@@ -11,6 +11,7 @@
     <modules>
         <module>Server</module>
         <module>Client</module>
+        <module>NIO</module>
     </modules>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
